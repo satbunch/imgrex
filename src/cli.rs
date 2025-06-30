@@ -13,7 +13,7 @@ pub struct Cli {
     pub dir_pattern: String,
 
     #[arg(long)]
-    pub mapping: String,
+    pub mapping: Option<String>,
 
     #[arg(long, default_value_t = false)]
     pub dry_run: bool,
