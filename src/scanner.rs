@@ -33,7 +33,7 @@ mod tests {
         // Create test directories.
         fs::create_dir_all(root.join("1234"))?; // Should match
         fs::create_dir_all(root.join("5678"))?; // Should match
-        fs::create_dir_all(root.join("123"))?;  // Should not match
+        fs::create_dir_all(root.join("123"))?; // Should not match
         fs::create_dir_all(root.join("12345"))?; // Should not match
         fs::create_dir_all(root.join("abcd"))?; // Should not match
         fs::create_dir_all(root.join("nested").join("9876"))?; // Should match
@@ -55,5 +55,19 @@ mod tests {
         assert_eq!(actual, expected);
 
         Ok(())
+    }
+
+    #[test]
+    fn test_empty_result() {
+        let dir = tempdir().unwrap();
+        let result = find_target_dirs(dir.path(), r"^d{4}$").unwrap();
+        assert_eq!(result.len(), 0);
+    }
+
+    #[test]
+    fn test_invalid_regex() {
+        let dir = tempdir().unwrap();
+        let result = find_target_dirs(dir.path(), r"[\");
+        assert!(result.is_err());
     }
 }
